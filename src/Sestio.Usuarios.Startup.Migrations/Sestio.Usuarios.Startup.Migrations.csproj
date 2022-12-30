@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlVersion)" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Sestio.Usuarios.Infra.EntityFramework\Sestio.Usuarios.Infra.EntityFramework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="appsettings*.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+</Project>

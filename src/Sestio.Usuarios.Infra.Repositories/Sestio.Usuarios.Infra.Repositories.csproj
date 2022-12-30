@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sestio.Commons.Infra.Repositories" Version="$(CommonsVersion)"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Sestio.Usuarios.Domain\Sestio.Usuarios.Domain.csproj"/>
+        <ProjectReference Include="..\Sestio.Usuarios.Infra.EntityFramework\Sestio.Usuarios.Infra.EntityFramework.csproj"/>
+    </ItemGroup>
+</Project>

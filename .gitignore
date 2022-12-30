@@ -1,0 +1,9 @@
+/.vs
+/.idea
+/.vscode
+/**/*.local.json
+/**/*.csproj.user
+/**/*.DotSettings.user
+/**/bin
+/**/obj
+/Dockerfile
