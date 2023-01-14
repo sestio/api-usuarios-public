@@ -1,0 +1,47 @@
+name: CI (pull request)
+
+run-name: ${{ github.run_id }}.${{ github.run_attempt }} ${{ github.event.pull_request.title }}
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: ci-pr-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  setup:
+    runs-on: self-hosted
+    outputs:
+      db_host: "172.30.1.10"
+      db_name: sestio_usuarios
+      vault_url: ${{ steps.load-urls.outputs.vault_url_dev }}
+      docker_registry: ${{ steps.load-urls.outputs.docker_registry }}
+      nuget_url: ${{ steps.load-urls.outputs.nuget_url }}
+    steps:
+    - name: Load URLs
+      id: load-urls
+      uses: sestio/gh/actions/load-urls@master
+
+  build:
+    needs: [setup]
+    uses: ./.github/workflows/reuse-build.yaml
+    with:
+      tags: |
+        tmp-pr-${{ github.run_id }}.${{ github.run_attempt }}
+      docker_registry: ${{ needs.setup.outputs.docker_registry }}
+      nuget_url: ${{ needs.setup.outputs.nuget_url }}
+      build_runtime: false
+      build_migrationrunner: false
+    secrets: inherit
+
+  test:
+    needs: [setup, build]
+    uses: ./.github/workflows/reuse-test.yaml
+    with:
+      docker_registry: ${{ needs.setup.outputs.docker_registry }}
+      image: ${{ needs.build.outputs.testrunner_image }}
+    secrets: inherit
+

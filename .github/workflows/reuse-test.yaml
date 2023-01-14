@@ -1,0 +1,25 @@
+name: '[Reusable] Test'
+
+on:
+  workflow_call:
+    inputs:
+      docker_registry:
+        type: string
+        required: true
+      image:
+        type: string
+        required: true
+
+jobs:
+  xunit:
+    runs-on: self-hosted
+    environment: ${{ inputs.environment }}
+    steps:
+    - name: Docker login
+      uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      with:
+        registry: ${{ inputs.docker_registry }}
+        username: ${{ secrets.docker_username }}
+        password: ${{ secrets.docker_password }}
+    - name: Run test image
+      run: docker container run --pull always --rm "${{ inputs.image }}"

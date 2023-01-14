@@ -1,0 +1,57 @@
+name: '[Reusable] Database'
+
+on:
+  workflow_call:
+    inputs:
+      db_host:
+        type: string
+        required: true
+      db_port:
+        type: string
+        required: true
+      db_name:
+        type: string
+        required: true
+      vault_url:
+        type: string
+        required: true
+      docker_registry:
+        type: string
+        required: true
+      image:
+        type: string
+        required: true
+
+jobs:
+  migrate:
+    runs-on: self-hosted
+    env:
+      DB_SECRET_PATH: sestio-dev-kv/data/api-usuarios/db-migration
+    steps:
+    - name: Docker login
+      uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      with:
+        registry: ${{ inputs.docker_registry }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Docker pull
+      run: |
+        # pull na imagem para não ocupar o tempo de vida das credenciais no vault
+        docker image pull "${{ inputs.image }}"
+    - name: Load secrets
+      uses: hashicorp/vault-action@8fa61e909919a3f94952e9e07ace6b5a1114440b
+      id: vault
+      with:
+        url: ${{ inputs.vault_url }}
+        token: ${{ secrets.VAULT_TOKEN }}
+        exportEnv: false
+        secrets: |
+          ${{ env.DB_SECRET_PATH }} username | DB_USERNAME ;
+          ${{ env.DB_SECRET_PATH }} password | DB_PASSWORD
+    - name: Run migration image
+      run: |
+        connection="Host=${{ inputs.db_host }};Port=${{ inputs.db_port }}; \
+                    Database=${{ inputs.db_name }}; \
+                    Username=${{ steps.vault.outputs.DB_USERNAME }}; \
+                    Password=${{ steps.vault.outputs.DB_PASSWORD }}"
+        docker container run --rm "${{ inputs.image }}" --connection "$connection"
