@@ -1,0 +1,56 @@
+name: '[Reusable] Build'
+
+on:
+  workflow_call:
+    inputs:
+      docker_registry:
+        type: string
+        required: true
+      tags:
+        type: string
+        required: true
+      nuget_url:
+        type: string
+        required: true
+      build_migrationrunner:
+        type: boolean
+        default: true
+      build_testrunner:
+        type: boolean
+        default: true
+      build_runtime:
+        type: boolean
+        default: true
+    outputs:
+      runtime_image:
+        value: ${{ jobs.images.outputs.runtime_image }}
+      testrunner_image:
+        value: ${{ jobs.images.outputs.testrunner_image }}
+      migrationrunner_image:
+        value: ${{ jobs.images.outputs.migrationrunner_image }}
+
+jobs:
+  images:
+    runs-on: self-hosted
+    outputs:
+      runtime_image: ${{ steps.build-images.outputs.runtime_image }}
+      testrunner_image: ${{ steps.build-images.outputs.testrunner_image }}
+      migrationrunner_image: ${{ steps.build-images.outputs.migrationrunner_image }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Build imagens
+      id: build-images
+      uses: sestio/gh/actions/build-images@master
+      with:
+        image_id: sestio/api-usuarios
+        tags: ${{ inputs.tags }}
+        docker_registry: ${{ inputs.docker_registry }}
+        docker_username: ${{ secrets.DOCKER_USERNAME }}
+        docker_password: ${{ secrets.DOCKER_PASSWORD }}
+        nuget_url: ${{ inputs.nuget_url }}
+        nuget_username: ${{ secrets.NUGET_USER }}
+        nuget_password: ${{ secrets.NUGET_TOKEN }}
+        build_migrationrunner: ${{ inputs.build_migrationrunner }}
+        build_testrunner: ${{ inputs.build_testrunner }}
+        build_runtime: ${{ inputs.build_runtime }}
