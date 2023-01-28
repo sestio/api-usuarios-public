@@ -9,35 +9,39 @@ namespace Sestio.Usuarios.IntegrationTests.Base.Helpers;
 
 public sealed class DbHelper
 {
+    private readonly IConfiguration _configuration;
     private readonly DatabaseConnectionSettings _connectionSettings;
 
     public DbHelper(string dbNamePrefix)
     {
+        _configuration = new ConfigurationBuilder()
+            .AddJsonFile("dbsettings.json")
+            .AddJsonFile("dbsettings.local.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
         _connectionSettings = LoadConnectionSettings().WithRandomDbName(dbNamePrefix);
     }
 
     public UsuariosDbContext CreateDbContext()
     {
-        var options = new DbContextOptionsBuilder<UsuariosDbContext>()
-            .UseNpgsql(_connectionSettings.ConnectionString)
-            .UseLoggerFactory(LoggerFactory.Create(p => p.AddConsole()))
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors()
-            .Options;
+        var optionsBuilder = new DbContextOptionsBuilder<UsuariosDbContext>()
+            .UseNpgsql(_connectionSettings.ConnectionString);
 
-        var context = new UsuariosDbContext(options);
+        if (_configuration.GetValue<bool>("DB_ENABLE_LOGGING"))
+        {
+            optionsBuilder
+                .UseLoggerFactory(LoggerFactory.Create(p => p.AddConsole()))
+                .EnableDetailedErrors()
+                .EnableSensitiveDataLogging();
+        }
+
+        var context = new UsuariosDbContext(optionsBuilder.Options);
         return context;
     }
 
-    private static DatabaseConnectionSettings LoadConnectionSettings()
+    private DatabaseConnectionSettings LoadConnectionSettings()
     {
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile("dbsettings.json")
-            .AddJsonFile("dbsettings.local.json", optional: true)
-            .AddEnvironmentVariables()
-            .Build();
-
-        return DatabaseConnectionSettings.FromConfiguration(configuration);
+        return DatabaseConnectionSettings.FromConfiguration(_configuration);
     }
 
     public async Task InsertAsync<T>(T entity)

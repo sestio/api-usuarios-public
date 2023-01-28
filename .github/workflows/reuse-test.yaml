@@ -37,7 +37,7 @@ jobs:
       run: |
         docker container run --rm --pull always \
           --network=${{ job.container.network }} \
-          --env ASPNETCORE_ENVIRONMENT=Production \
+          --env DB_ENABLE_LOGGING=false \
           --env DB_HOST=postgres \
           --env DB_NAME=tests \
           --env DB_USERNAME=admin \
