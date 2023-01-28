@@ -4,7 +4,7 @@ using Sestio.Usuarios.Domain.Hashing;
 using Sestio.Usuarios.Domain.Usuarios.Entities;
 using Sestio.Usuarios.Infra.Domain.Hashing;
 
-namespace Sestio.Usuarios.UnitTests.Specs.Domain;
+namespace Sestio.Usuarios.UnitTests.Specs.Domain.Usuarios;
 
 public class UsuarioFactoryTests
 {

@@ -22,7 +22,60 @@ namespace Sestio.Usuarios.Startup.Migrations.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Sestio.Usuarios.Domain.Usuarios.Usuario", b =>
+            modelBuilder.Entity("Sestio.Usuarios.Domain.Sessoes.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("IdSessao")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_sessao");
+
+                    b.Property<int>("Situacao")
+                        .HasColumnType("integer")
+                        .HasColumnName("situacao");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("token");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.ToTable("token_sessao", (string)null);
+                });
+
+            modelBuilder.Entity("Sestio.Usuarios.Domain.Sessoes.Entities.Sessao", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_criacao");
+
+                    b.Property<Guid>("IdUsuario")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_usuario");
+
+                    b.Property<int>("Situacao")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Validade")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_validade");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("sessao", (string)null);
+                });
+
+            modelBuilder.Entity("Sestio.Usuarios.Domain.Usuarios.Entities.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -50,7 +103,7 @@ namespace Sestio.Usuarios.Startup.Migrations.Migrations
                     b.ToTable("usuario", (string)null);
                 });
 
-            modelBuilder.Entity("Sestio.Usuarios.Domain.Usuarios.Usuario", b =>
+            modelBuilder.Entity("Sestio.Usuarios.Domain.Usuarios.Entities.Usuario", b =>
                 {
                     b.OwnsOne("Sestio.Usuarios.Domain.Hashing.HashedPassword", "Senha", b1 =>
                         {

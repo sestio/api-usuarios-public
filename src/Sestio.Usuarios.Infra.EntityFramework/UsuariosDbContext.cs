@@ -15,5 +15,7 @@ public class UsuariosDbContext : DefaultDbContext
     protected override void ConfigureMappings(EntityMappingBag mappings)
     {
         mappings.Add(new UsuarioMapping());
+        mappings.Add(new SessaoMapping());
+        mappings.Add(new RefreshTokenMapping());
     }
 }

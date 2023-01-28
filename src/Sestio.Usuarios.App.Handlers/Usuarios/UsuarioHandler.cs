@@ -26,7 +26,6 @@ public class UsuarioHandler : IUsuarioHandler
 
     public async Task<UsuarioResponse> CriarUsuarioAsync(CriarUsuarioRequest request)
     {
-        // TODO: Adicionar validações quando deixar de ser apenas para desenvolvimento
         var dto = CriarUsuarioDtoMapper.Map(request);
         var usuario = _usuarioFactory.Criar(dto);
 

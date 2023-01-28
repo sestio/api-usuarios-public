@@ -9,7 +9,6 @@ public sealed class ReadinessCheck : IReadinessCheck
         HealthCheckContext context,
         CancellationToken cancellationToken = new())
     {
-        // TODO: Esperar pela aplicação ter mais dependências antes de colocar qualquer lógica aqui
         return Task.FromResult(HealthCheckResult.Healthy());
     }
 }
