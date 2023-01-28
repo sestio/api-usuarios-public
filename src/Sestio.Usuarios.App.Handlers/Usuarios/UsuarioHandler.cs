@@ -30,7 +30,7 @@ public class UsuarioHandler : IUsuarioHandler
         var dto = CriarUsuarioDtoMapper.Map(request);
         var usuario = _usuarioFactory.Criar(dto);
 
-        await _usuarioRepository.AddAsync(usuario);
+        _usuarioRepository.Add(usuario);
         await _unitOfWork.SaveChangesAsync();
 
         var view = MapToResponse(usuario);
