@@ -1,17 +1,17 @@
-﻿using Sestio.Usuarios.App.Services.Usuarios.Commands;
-using Sestio.Usuarios.Domain.Usuarios;
+﻿using Sestio.Usuarios.App.Services.Usuarios.Requests;
+using Sestio.Usuarios.Domain.Usuarios.Entities;
 
 namespace Sestio.Usuarios.App.Handlers.Usuarios.Mappers;
 
 public static class CriarUsuarioDtoMapper
 {
-    public static CriarUsuarioDto Map(CriarUsuarioCommand command)
+    public static CriarUsuarioDto Map(CriarUsuarioRequest request)
     {
         var result = new CriarUsuarioDto(
-            command.IdTenant,
-            command.Nome,
-            command.Email,
-            command.Senha);
+            request.IdTenant,
+            request.Nome,
+            request.Email,
+            request.Senha);
         return result;
     }
 }

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <ProjectReference Include="..\Sestio.Usuarios.App.Services\Sestio.Usuarios.App.Services.csproj"/>
-        <ProjectReference Include="..\Sestio.Usuarios.Domain\Sestio.Usuarios.Domain.csproj"/>
+        <ProjectReference Include="..\Sestio.Usuarios.App.Services\Sestio.Usuarios.App.Services.csproj" />
+        <ProjectReference Include="..\Sestio.Usuarios.Domain\Sestio.Usuarios.Domain.csproj" />
     </ItemGroup>
 </Project>

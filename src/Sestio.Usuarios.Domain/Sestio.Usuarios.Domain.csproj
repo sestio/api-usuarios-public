@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
         <PackageReference Include="Sestio.Commons.Domain" Version="$(CommonsVersion)" />
+        <PackageReference Include="Sestio.Commons.JsonWebTokens.Services" Version="$(CommonsVersion)" />
+        <PackageReference Include="Sestio.Commons.SourceGeneration.Attributes" Version="$(CommonsVersion)" />
+        <PackageReference Include="Sestio.Commons.SourceGeneration.Generators" Version="$(CommonsVersion)" />
     </ItemGroup>
 </Project>

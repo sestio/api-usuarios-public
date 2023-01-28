@@ -6,12 +6,12 @@ using Sestio.Usuarios.Infra.EntityFramework;
 namespace Sestio.Usuarios.Startup.Migrations;
 
 public class MigrationDbContextFactory :
-    IDesignTimeDbContextFactory<UsuarioDbContext>
+    IDesignTimeDbContextFactory<UsuariosDbContext>
 {
-    UsuarioDbContext IDesignTimeDbContextFactory<UsuarioDbContext>.CreateDbContext(string[] args)
+    UsuariosDbContext IDesignTimeDbContextFactory<UsuariosDbContext>.CreateDbContext(string[] args)
     {
-        var options = BuildDbContextOptions<UsuarioDbContext>();
-        return new UsuarioDbContext(options);
+        var options = BuildDbContextOptions<UsuariosDbContext>();
+        return new UsuariosDbContext(options);
     }
 
     private static DbContextOptions<TDbContext> BuildDbContextOptions<TDbContext>()

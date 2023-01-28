@@ -1,0 +1,8 @@
+﻿{
+    "DB_ENABLE_LOGGING": true,
+    "DB_HOST": "localhost",
+    "DB_PORT": "65001",
+    "DB_NAME": "postgres",
+    "DB_USERNAME": "admin",
+    "DB_PASSWORD": "admin"
+}

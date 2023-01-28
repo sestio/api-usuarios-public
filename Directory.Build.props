@@ -3,11 +3,11 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <WarningsAsErrors>Nullable;CS4014</WarningsAsErrors>
+        <WarningsAsErrors>Nullable;CS4014;CA2012</WarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup>
-        <CommonsVersion>0.1.3</CommonsVersion>
+        <CommonsVersion>0.3.1</CommonsVersion>
         <NpgsqlVersion>7.0.1</NpgsqlVersion>
     </PropertyGroup>
 </Project>

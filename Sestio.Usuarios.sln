@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sestio.Usuarios.App.Handler
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sestio.Usuarios.Infra.Domain", "src\Sestio.Usuarios.Infra.Domain\Sestio.Usuarios.Infra.Domain.csproj", "{D82D43A2-F394-4C28-ACDC-92EB1849EAE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sestio.Usuarios.TestLib", "test\Sestio.Usuarios.TestLib\Sestio.Usuarios.TestLib.csproj", "{0A52343F-830D-45F3-9531-29A7D157F1FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sestio.Usuarios.IntegrationTests", "test\Sestio.Usuarios.IntegrationTests\Sestio.Usuarios.IntegrationTests.csproj", "{2D28466B-EAE3-4E6B-8B7E-823C23C24630}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +80,14 @@ Global
 		{D82D43A2-F394-4C28-ACDC-92EB1849EAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D82D43A2-F394-4C28-ACDC-92EB1849EAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D82D43A2-F394-4C28-ACDC-92EB1849EAE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A52343F-830D-45F3-9531-29A7D157F1FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A52343F-830D-45F3-9531-29A7D157F1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A52343F-830D-45F3-9531-29A7D157F1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A52343F-830D-45F3-9531-29A7D157F1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D28466B-EAE3-4E6B-8B7E-823C23C24630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D28466B-EAE3-4E6B-8B7E-823C23C24630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D28466B-EAE3-4E6B-8B7E-823C23C24630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D28466B-EAE3-4E6B-8B7E-823C23C24630}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D6FBFF0B-F249-4692-AB1B-C20813E53D0A} = {A296458D-159E-49BC-8F71-72F43CBB107A}
@@ -88,5 +100,7 @@ Global
 		{9B0FC33E-2BDB-4ECD-A0DA-7E2DC4DC1E28} = {10E1FA78-C475-48C6-A1F1-764151B26C44}
 		{2D84FC19-55BE-4C12-9A0B-5FFA454DEC8E} = {10E1FA78-C475-48C6-A1F1-764151B26C44}
 		{D82D43A2-F394-4C28-ACDC-92EB1849EAE5} = {10E1FA78-C475-48C6-A1F1-764151B26C44}
+		{0A52343F-830D-45F3-9531-29A7D157F1FE} = {A296458D-159E-49BC-8F71-72F43CBB107A}
+		{2D28466B-EAE3-4E6B-8B7E-823C23C24630} = {A296458D-159E-49BC-8F71-72F43CBB107A}
 	EndGlobalSection
 EndGlobal
