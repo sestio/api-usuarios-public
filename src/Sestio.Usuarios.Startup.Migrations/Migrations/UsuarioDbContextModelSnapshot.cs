@@ -10,7 +10,7 @@ using Sestio.Usuarios.Infra.EntityFramework;
 
 namespace Sestio.Usuarios.Startup.Migrations.Migrations
 {
-    [DbContext(typeof(UsuarioDbContext))]
+    [DbContext(typeof(UsuariosDbContext))]
     partial class UsuarioDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

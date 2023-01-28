@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Sestio.Usuarios.Domain.Hashing;
-using Sestio.Usuarios.Domain.Usuarios;
+using Sestio.Usuarios.Domain.Usuarios.Entities;
 
 namespace Sestio.Usuarios.Infra.Domain.Hashing;
 

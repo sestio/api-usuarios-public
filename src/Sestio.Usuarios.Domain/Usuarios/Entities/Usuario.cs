@@ -1,7 +1,7 @@
 ﻿using Sestio.Commons.Domain;
 using Sestio.Usuarios.Domain.Hashing;
 
-namespace Sestio.Usuarios.Domain.Usuarios;
+namespace Sestio.Usuarios.Domain.Usuarios.Entities;
 
 public class Usuario : IIdentifiable
 {
@@ -15,7 +15,7 @@ public class Usuario : IIdentifiable
         Senha = new HashedPassword("");
     }
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; } = Guid.NewGuid();
     public Guid IdTenant { get; }
     public string Nome { get; }
     public string Email { get; }

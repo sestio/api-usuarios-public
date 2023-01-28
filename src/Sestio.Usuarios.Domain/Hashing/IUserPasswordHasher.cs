@@ -1,4 +1,4 @@
-﻿using Sestio.Usuarios.Domain.Usuarios;
+﻿using Sestio.Usuarios.Domain.Usuarios.Entities;
 
 namespace Sestio.Usuarios.Domain.Hashing;
 

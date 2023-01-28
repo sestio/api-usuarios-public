@@ -6,7 +6,7 @@ using Sestio.Commons.Infra.EntityFramework.Extensions;
 using Sestio.Usuarios.App.Handlers.Usuarios;
 using Sestio.Usuarios.App.Services.Usuarios.Services;
 using Sestio.Usuarios.Domain.Hashing;
-using Sestio.Usuarios.Domain.Usuarios;
+using Sestio.Usuarios.Domain.Usuarios.Entities;
 using Sestio.Usuarios.Infra.Domain.Hashing;
 using Sestio.Usuarios.Infra.EntityFramework;
 using Sestio.Usuarios.Infra.Repositories.Usuarios;
@@ -24,7 +24,7 @@ public static class ServiceContainerExtensions
 
     public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<UsuarioDbContext>(options =>
+        services.AddDbContext<UsuariosDbContext>(options =>
         {
             var databaseOptions = configuration.GetSection("Database").Get<DatabaseOptions>()!;
             options.UseNpgsql(databaseOptions.ConnectionString);
@@ -34,7 +34,7 @@ public static class ServiceContainerExtensions
                 options.EnableSensitiveDataLogging = databaseOptions.EnableSensitiveDataLogging;
             });
         });
-        services.AddScoped<IUnitOfWork, DefaultUnitOfWork<UsuarioDbContext>>();
+        services.AddScoped<IUnitOfWork, DefaultUnitOfWork<UsuariosDbContext>>();
     }
 
     public static void AddRepositories(this IServiceCollection services)
@@ -48,6 +48,6 @@ public static class ServiceContainerExtensions
         services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
         services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 
-        services.AddScoped<IUsuarioService, UsuarioHandler>();
+        services.AddScoped<IUsuarioHandler, UsuarioHandler>();
     }
 }

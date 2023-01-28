@@ -1,6 +1,6 @@
 ﻿using Sestio.Usuarios.Domain.Hashing;
 
-namespace Sestio.Usuarios.Domain.Usuarios;
+namespace Sestio.Usuarios.Domain.Usuarios.Entities;
 
 public sealed record CriarUsuarioDto(
     Guid IdTenant,

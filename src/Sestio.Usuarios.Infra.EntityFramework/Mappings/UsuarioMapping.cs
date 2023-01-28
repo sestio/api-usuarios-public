@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Sestio.Commons.Infra.EntityFramework.EntityTypeMapping;
-using Sestio.Usuarios.Domain.Usuarios;
+using Sestio.Usuarios.Domain.Usuarios.Entities;
 
 namespace Sestio.Usuarios.Infra.EntityFramework.Mappings;
 

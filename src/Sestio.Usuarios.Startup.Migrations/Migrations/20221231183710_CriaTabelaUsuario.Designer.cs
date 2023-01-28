@@ -11,7 +11,7 @@ using Sestio.Usuarios.Infra.EntityFramework;
 
 namespace Sestio.Usuarios.Startup.Migrations.Migrations
 {
-    [DbContext(typeof(UsuarioDbContext))]
+    [DbContext(typeof(UsuariosDbContext))]
     [Migration("20221231183710_CriaTabelaUsuario")]
     partial class CriaTabelaUsuario
     {

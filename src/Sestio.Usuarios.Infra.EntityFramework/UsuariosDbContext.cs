@@ -5,9 +5,9 @@ using Sestio.Usuarios.Infra.EntityFramework.Mappings;
 
 namespace Sestio.Usuarios.Infra.EntityFramework;
 
-public class UsuarioDbContext : DefaultDbContext
+public class UsuariosDbContext : DefaultDbContext
 {
-    public UsuarioDbContext(DbContextOptions<UsuarioDbContext> options)
+    public UsuariosDbContext(DbContextOptions<UsuariosDbContext> options)
         : base(options, userInfo: null!)
     {
     }
