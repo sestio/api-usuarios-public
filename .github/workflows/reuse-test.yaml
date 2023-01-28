@@ -13,7 +13,19 @@ on:
 jobs:
   xunit:
     runs-on: self-hosted
-    environment: ${{ inputs.environment }}
+    container:
+      image: docker:20.10.23
+      env:
+        DOCKER_HOST: unix:///docker.sock
+      volumes:
+        - /docker.sock:/docker.sock
+    services:
+      postgres:
+        image: postgres:14.5-alpine
+        env:
+          POSTGRES_DB: tests
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: admin
     steps:
     - name: Docker login
       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -22,4 +34,13 @@ jobs:
         username: ${{ secrets.docker_username }}
         password: ${{ secrets.docker_password }}
     - name: Run test image
-      run: docker container run --pull always --rm "${{ inputs.image }}"
+      run: |
+        docker container run --rm --pull always \
+          --network=${{ job.container.network }} \
+          --env ASPNETCORE_ENVIRONMENT=Production \
+          --env DB_HOST=postgres \
+          --env DB_NAME=tests \
+          --env DB_USERNAME=admin \
+          --env DB_PASSWORD=admin \
+          --env DB_PORT=5432 \
+          "${{ inputs.image }}"
