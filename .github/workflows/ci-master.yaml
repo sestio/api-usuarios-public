@@ -70,7 +70,7 @@ jobs:
         release: api-usuarios
         namespace: sestio-dev
         chart-name: api-usuarios
-        chart-version: 0.1.1
+        chart-version: 0.1.2
         values: |
           replicaCount: "2"
           image:
@@ -82,6 +82,8 @@ jobs:
             logLevels:
               Default: "Information"
               Microsoft.AspNetCore: "Information"
+            minutosDuracaoSessao: 60
+            minutosDuracaoAccessToken: 5
           db:
             connectionTpl: "Database=${{ needs.setup.outputs.db_name }};
                             Host=${{ needs.setup.outputs.db_host }};
@@ -94,4 +96,5 @@ jobs:
             role: "sestio-dev"
             debugLevel: "debug"
             secrets:
+              globals: "sestio-dev-kv/globals"
               db: "sestio-dev-postgres/creds/sestio-usuarios"
