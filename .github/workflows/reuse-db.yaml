@@ -6,9 +6,6 @@ on:
       db_host:
         type: string
         required: true
-      db_port:
-        type: string
-        required: true
       db_name:
         type: string
         required: true
@@ -50,7 +47,7 @@ jobs:
           ${{ env.DB_SECRET_PATH }} password | DB_PASSWORD
     - name: Run migration image
       run: |
-        connection="Host=${{ inputs.db_host }};Port=${{ inputs.db_port }}; \
+        connection="Host=${{ inputs.db_host }}; \
                     Database=${{ inputs.db_name }}; \
                     Username=${{ steps.vault.outputs.DB_USERNAME }}; \
                     Password=${{ steps.vault.outputs.DB_PASSWORD }}"
