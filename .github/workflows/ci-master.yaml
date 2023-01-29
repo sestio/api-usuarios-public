@@ -11,10 +11,6 @@ concurrency:
   group: ci-master
   cancel-in-progress: false
 
-env:
-  DB_HOST: "172.30.1.10"
-  DB_NAME: sestio_usuarios
-
 jobs:
   build:
     uses: ./.github/workflows/reuse-build.yaml
@@ -38,8 +34,8 @@ jobs:
     needs: [build, test]
     uses: ./.github/workflows/reuse-db.yaml
     with:
-      db_host: ${{ env.DB_HOST }}
-      db_name: ${{ env.DB_NAME }}
+      db_host: ${{ vars.DEV_DB_HOST }}
+      db_name: ${{ vars.DEV_DB_NAME }}
       vault_url: ${{ vars.VAULT_URL }}
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       image: ${{ needs.build.outputs.migrationrunner_image }}
@@ -74,8 +70,8 @@ jobs:
             minutosDuracaoSessao: 60
             minutosDuracaoAccessToken: 5
           db:
-            connectionTpl: "Database=${{ env.DB_NAME }};
-                            Host=${{ env.DB_HOST }};
+            connectionTpl: "Database=${{ vars.DEV_DB_NAME }};
+                            Host=${{ vars.DEV_DB_HOST }};
                             Username={#username#};
                             Password={#password#}"
             enableDetailedErrors: "true"
