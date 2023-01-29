@@ -11,54 +11,43 @@ concurrency:
   group: ci-master
   cancel-in-progress: false
 
-jobs:
-  setup:
-    runs-on: self-hosted
-    outputs:
-      db_host: "172.30.1.10"
-      db_name: sestio_usuarios
-      vault_url: ${{ steps.load-urls.outputs.vault_url_dev }}
-      docker_registry: ${{ steps.load-urls.outputs.docker_registry }}
-      nuget_url: ${{ steps.load-urls.outputs.nuget_url }}
-    steps:
-    - name: Load URLs
-      id: load-urls
-      uses: sestio/gh/actions/load-urls@master
+env:
+  DB_HOST: "172.30.1.10"
+  DB_NAME: sestio_usuarios
 
+jobs:
   build:
-    needs: [setup]
     uses: ./.github/workflows/reuse-build.yaml
     with:
       tags: |
         master
         master-ci.${{ github.sha }}.${{ github.run_attempt }}
-      docker_registry: ${{ needs.setup.outputs.docker_registry }}
-      nuget_url: ${{ needs.setup.outputs.nuget_url }}
+      docker_registry: ${{ vars.DOCKER_REGISTRY }}
+      nuget_url: ${{ vars.NUGET_URL }}
     secrets: inherit
 
   test:
-    needs: [setup, build]
+    needs: [build]
     uses: ./.github/workflows/reuse-test.yaml
     with:
-      docker_registry: ${{ needs.setup.outputs.docker_registry }}
+      docker_registry: ${{ vars.DOCKER_REGISTRY }}
       image: ${{ needs.build.outputs.testrunner_image }}
     secrets: inherit
 
   db:
-    needs: [setup, build, test]
+    needs: [build, test]
     uses: ./.github/workflows/reuse-db.yaml
     with:
-      db_host: ${{ needs.setup.outputs.db_host }}
-      db_port: ${{ needs.setup.outputs.db_port }}
-      db_name: ${{ needs.setup.outputs.db_name }}
-      vault_url: ${{ needs.setup.outputs.vault_url }}
-      docker_registry: ${{ needs.setup.outputs.docker_registry }}
+      db_host: ${{ env.DB_HOST }}
+      db_name: ${{ env.DB_NAME }}
+      vault_url: ${{ vars.VAULT_URL }}
+      docker_registry: ${{ vars.DOCKER_REGISTRY }}
       image: ${{ needs.build.outputs.migrationrunner_image }}
     secrets: inherit
 
   deploy_dev:
     runs-on: self-hosted
-    needs: [setup, build, db]
+    needs: [build, db]
     container: alpine/helm:3.10.2
     steps:
     - uses: sestio/gh/actions/helm-deploy@master
@@ -85,8 +74,8 @@ jobs:
             minutosDuracaoSessao: 60
             minutosDuracaoAccessToken: 5
           db:
-            connectionTpl: "Database=${{ needs.setup.outputs.db_name }};
-                            Host=${{ needs.setup.outputs.db_host }};
+            connectionTpl: "Database=${{ env.DB_NAME }};
+                            Host=${{ env.DB_HOST }};
                             Username={#username#};
                             Password={#password#}"
             enableDetailedErrors: "true"
