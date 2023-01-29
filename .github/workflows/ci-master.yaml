@@ -36,7 +36,7 @@ jobs:
     with:
       db_host: ${{ vars.DEV_DB_HOST }}
       db_name: ${{ vars.DEV_DB_NAME }}
-      vault_url: ${{ vars.VAULT_URL }}
+      vault_url: ${{ vars.VAULT_URL_DEV }}
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       image: ${{ needs.build.outputs.migrationrunner_image }}
     secrets: inherit
