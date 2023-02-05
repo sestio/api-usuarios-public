@@ -3,9 +3,6 @@ name: '[Reusable] Test'
 on:
   workflow_call:
     inputs:
-      docker_registry:
-        type: string
-        required: true
       image:
         type: string
         required: true
@@ -30,7 +27,7 @@ jobs:
     - name: Docker login
       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
       with:
-        registry: ${{ inputs.docker_registry }}
+        registry: ${{ vars.DOCKER_REGISTRY }}
         username: ${{ secrets.docker_username }}
         password: ${{ secrets.docker_password }}
     - name: Run test image

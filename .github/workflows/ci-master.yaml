@@ -17,69 +17,74 @@ jobs:
     with:
       tags: |
         master
-        master-ci.${{ github.sha }}.${{ github.run_attempt }}
-      docker_registry: ${{ vars.DOCKER_REGISTRY }}
-      nuget_url: ${{ vars.NUGET_URL }}
+        master-ci.${{ github.sha }}
     secrets: inherit
 
   test:
     needs: [build]
     uses: ./.github/workflows/reuse-test.yaml
     with:
-      docker_registry: ${{ vars.DOCKER_REGISTRY }}
-      image: ${{ needs.build.outputs.testrunner_image }}
+      image: ${{ needs.build.outputs.testrunner-image }}
     secrets: inherit
 
-  db:
-    needs: [build, test]
-    uses: ./.github/workflows/reuse-db.yaml
-    with:
-      db_host: ${{ vars.DEV_DB_HOST }}
-      db_name: ${{ vars.DEV_DB_NAME }}
-      vault_url: ${{ vars.VAULT_URL_DEV }}
-      docker_registry: ${{ vars.DOCKER_REGISTRY }}
-      image: ${{ needs.build.outputs.migrationrunner_image }}
-    secrets: inherit
-
-  deploy_dev:
+  deploy:
     runs-on: self-hosted
-    needs: [build, db]
-    container: alpine/helm:3.10.2
+    needs: [build, test]
+    environment: development
     steps:
-    - uses: sestio/gh/actions/helm-deploy@master
-      env:
-        REPO_USERNAME: ${{ secrets.HELM_USERNAME }}
-        REPO_PASSWORD: ${{ secrets.HELM_PASSWORD }}
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Docker login
+      uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
       with:
-        release: api-usuarios
-        namespace: sestio-dev
-        chart-name: api-usuarios
+        registry: ${{ vars.DOCKER_REGISTRY }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - uses: sestio/gh/actions/db-migrate@master
+      with:
+        image: ${{ needs.build.outputs.migrationrunner-image }}
+        vault-url: ${{ vars.VAULT_URL_DEV }}
+        vault-token: ${{ secrets.VAULT_TOKEN }}
+        vault-secret: ${{ vars.VAULTSECRET_DBMIGRATION }}
+        connection: |
+          Database=${{ vars.DB_NAME }};
+          Host=${{ vars.DB_HOST }};
+          Username={#username#};
+          Password={#password#}
+    - uses: sestio/gh/actions/helm-deploy@master
+      with:
+        release: ${{ vars.DEPLOY_RELEASENAME }}
+        namespace: ${{ vars.DEPLOY_NAMESPACE }}
+        repo-url: ${{ vars.HELM_URL }}
+        repo-username: ${{ secrets.HELM_USERNAME }}
+        repo-password: ${{ secrets.HELM_PASSWORD }}
+        kube-config: ${{ secrets.KUBE_CONFIG }}
+        chart-name: ${{ vars.DEPLOY_CHARTNAME }}
         chart-version: 0.1.2
         values: |
-          replicaCount: "2"
+          replicaCount: ${{ vars.DEPLOY_REPLICACOUNT }}
           image:
-            image: ${{ needs.build.outputs.runtime_image }}
+            image: ${{ needs.build.outputs.runtime-image }}
           ingress:
-            enabled: "true"
-            host: "sestio-dev.local.vmrlab.net"
+            enabled: true
+            host: ${{ vars.SESTIO_HOST_DEV }}
           app:
             logLevels:
-              Default: "Information"
-              Microsoft.AspNetCore: "Information"
-            minutosDuracaoSessao: 60
-            minutosDuracaoAccessToken: 5
+              Default: Information
+              Microsoft.AspNetCore: Information
+            minutosDuracaoSessao: ${{ vars.APPVAR_MINUTOS_DURACAO_SESSAO }}
+            minutosDuracaoAccessToken: ${{ vars.APPVAR_MINUTOS_DURACAO_ACESSSTOKEN }}
           db:
-            connectionTpl: "Database=${{ vars.DEV_DB_NAME }};
-                            Host=${{ vars.DEV_DB_HOST }};
+            connectionTpl: "Database=${{ vars.DB_NAME }};
+                            Host=${{ vars.DB_HOST }};
                             Username={#username#};
                             Password={#password#}"
-            enableDetailedErrors: "true"
-            enableSensitiveDataLogging: "true"
+            enableDetailedErrors: true
+            enableSensitiveDataLogging: true
           vault:
-            enabled: "true"
-            role: "sestio-dev"
-            debugLevel: "debug"
+            enabled: true
+            role: ${{ vars.VAULT_ROLE }}
+            debugLevel: debug
             secrets:
-              globals: "sestio-dev-kv/globals"
-              db: "sestio-dev-postgres/creds/sestio-usuarios"
+              globals: ${{ vars.VAULTSECRET_GLOBALS }}
+              db: ${{ vars.VAULTSECRET_DBCREDS }}
