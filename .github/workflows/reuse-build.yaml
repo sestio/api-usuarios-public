@@ -3,54 +3,52 @@ name: '[Reusable] Build'
 on:
   workflow_call:
     inputs:
-      docker_registry:
-        type: string
-        required: true
       tags:
         type: string
         required: true
-      nuget_url:
-        type: string
-        required: true
-      build_migrationrunner:
+      build-migrationrunner:
         type: boolean
         default: true
-      build_testrunner:
+      build-testrunner:
         type: boolean
         default: true
-      build_runtime:
+      build-runtime:
         type: boolean
         default: true
     outputs:
-      runtime_image:
-        value: ${{ jobs.images.outputs.runtime_image }}
-      testrunner_image:
-        value: ${{ jobs.images.outputs.testrunner_image }}
-      migrationrunner_image:
-        value: ${{ jobs.images.outputs.migrationrunner_image }}
+      runtime-image:
+        value: ${{ jobs.images.outputs.runtime-image }}
+      testrunner-image:
+        value: ${{ jobs.images.outputs.testrunner-image }}
+      migrationrunner-image:
+        value: ${{ jobs.images.outputs.migrationrunner-image }}
 
 jobs:
   images:
     runs-on: self-hosted
     outputs:
-      runtime_image: ${{ steps.build-images.outputs.runtime_image }}
-      testrunner_image: ${{ steps.build-images.outputs.testrunner_image }}
-      migrationrunner_image: ${{ steps.build-images.outputs.migrationrunner_image }}
+      runtime-image: ${{ steps.build-images.outputs.runtime-image }}
+      testrunner-image: ${{ steps.build-images.outputs.testrunner-image }}
+      migrationrunner-image: ${{ steps.build-images.outputs.migrationrunner-image }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    - name: Docker login
+      uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      with:
+        registry: ${{ vars.DOCKER_REGISTRY }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build imagens
       id: build-images
       uses: sestio/gh/actions/build-images@master
       with:
-        image_id: sestio/api-usuarios
+        image-id: sestio/api-usuarios
         tags: ${{ inputs.tags }}
-        docker_registry: ${{ inputs.docker_registry }}
-        docker_username: ${{ secrets.DOCKER_USERNAME }}
-        docker_password: ${{ secrets.DOCKER_PASSWORD }}
-        nuget_url: ${{ inputs.nuget_url }}
-        nuget_username: ${{ secrets.NUGET_USER }}
-        nuget_password: ${{ secrets.NUGET_TOKEN }}
-        build_migrationrunner: ${{ inputs.build_migrationrunner }}
-        build_testrunner: ${{ inputs.build_testrunner }}
-        build_runtime: ${{ inputs.build_runtime }}
+        docker-registry: ${{ vars.DOCKER_REGISTRY }}
+        nuget-url: ${{ vars.NUGET_URL }}
+        nuget-username: ${{ secrets.NUGET_USER }}
+        nuget-password: ${{ secrets.NUGET_TOKEN }}
+        build-migrationrunner: ${{ inputs.build-migrationrunner }}
+        build-testrunner: ${{ inputs.build-testrunner }}
+        build-runtime: ${{ inputs.build-runtime }}

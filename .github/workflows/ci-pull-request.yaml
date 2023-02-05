@@ -17,17 +17,14 @@ jobs:
     with:
       tags: |
         tmp-pr-${{ github.run_id }}.${{ github.run_attempt }}
-      docker_registry: ${{ vars.DOCKER_REGISTRY }}
-      nuget_url: ${{ vars.NUGET_URL }}
-      build_runtime: false
-      build_migrationrunner: false
+      build-runtime: false
+      build-migrationrunner: false
     secrets: inherit
 
   test:
     needs: [build]
     uses: ./.github/workflows/reuse-test.yaml
     with:
-      docker_registry: ${{ vars.DOCKER_REGISTRY }}
-      image: ${{ needs.build.outputs.testrunner_image }}
+      image: ${{ needs.build.outputs.testrunner-image }}
     secrets: inherit
 
