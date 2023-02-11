@@ -13,11 +13,21 @@ public sealed class UsuarioRepository : Repository<UsuariosDbContext, Usuario>, 
     {
     }
 
-    public async Task<Usuario?> ObterPorEmailAsync(string email)
+    public Task<bool> ExistePorEmailAsync(string email)
     {
-        var query = CreateQueryable();
-        var usuario = await query.FirstOrDefaultAsync(p => p.Email.ToLower() == email.ToLower());
-        return usuario;
+        var query = CreateQueryablePorEmail(email);
+        return query.AnyAsync();
+    }
+
+    public Task<Usuario?> ObterPorEmailAsync(string email)
+    {
+        var query = CreateQueryablePorEmail(email);
+        return query.FirstOrDefaultAsync();
+    }
+
+    private IQueryable<Usuario> CreateQueryablePorEmail(string email)
+    {
+        return CreateQueryable().Where(p => p.Email == email.ToUpperInvariant());
     }
 
     public async Task<Usuario> ObterPorSessaoAsync(Sessao sessao)

@@ -1,5 +1,6 @@
 ﻿using Sestio.Commons.Domain;
 using Sestio.Commons.JsonWebTokens.Services.PeerJwts;
+using Sestio.Commons.Validation.Services;
 using Sestio.Usuarios.App.Services.Sessoes.Requests;
 using Sestio.Usuarios.App.Services.Sessoes.Responses;
 using Sestio.Usuarios.App.Services.Sessoes.Services;
@@ -15,6 +16,7 @@ public class SessaoHandler : ISessaoHandler
 {
     private readonly GerenciadorUsuario _gerenciadorUsuario;
     private readonly IGeradorRefreshToken _geradorRefreshToken;
+    private readonly INotificationBag _notifications;
     private readonly GerenciadorSessao _gerenciadorSessao;
 
     public SessaoHandler(IUnitOfWork unitOfWork,
@@ -24,10 +26,12 @@ public class SessaoHandler : ISessaoHandler
                          IUserPasswordHasher<Usuario> userPasswordHasher,
                          IPeerJwtBuilder peerJwtBuilder,
                          IGeradorRefreshToken geradorRefreshToken,
-                         SessaoOptions sessaoOptions)
+                         SessaoOptions sessaoOptions,
+                         INotificationBag notifications)
     {
         _gerenciadorUsuario = new GerenciadorUsuario(usuarioRepository, userPasswordHasher);
         _geradorRefreshToken = geradorRefreshToken;
+        _notifications = notifications;
         _gerenciadorSessao = new GerenciadorSessao(
             unitOfWork,
             usuarioRepository,
@@ -43,7 +47,10 @@ public class SessaoHandler : ISessaoHandler
         var resultadoAutenticacao = await _gerenciadorUsuario.ObterUsuarioAutenticadoAsync(credenciais);
 
         if (!resultadoAutenticacao.Sucesso)
+        {
+            _notifications.AddError("INVALID_CREDENTIALS", "Credenciais inválidas");
             return SessaoResponseMapper.Invalido(MotivoFalhaSessaoResponse.CredenciaisInvalidas);
+        }
 
         var sessao = await _gerenciadorSessao.CriarSessaoAsync(resultadoAutenticacao.Usuario!);
 

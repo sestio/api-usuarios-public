@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Sestio.Commons.Api.Rest.Controllers;
 using Sestio.Usuarios.App.Services.Sessoes.Requests;
 using Sestio.Usuarios.App.Services.Sessoes.Responses;
 using Sestio.Usuarios.App.Services.Sessoes.Services;
@@ -7,7 +7,7 @@ using Sestio.Usuarios.App.Services.Sessoes.Services;
 namespace Sestio.Usuarios.Api.Rest.Sessoes;
 
 [ApiController]
-public class SessoesController : ControllerBase
+public class SessoesController : SestioController
 {
     [HttpPost("sessoes")]
     public async Task<ActionResult<SessaoView?>> IniciarSessaoAsync(
@@ -26,7 +26,7 @@ public class SessoesController : ControllerBase
     public async Task<ActionResult<SessaoView?>> IniciarSessaoAsync(
         [FromServices] ISessaoHandler handler)
     {
-        var refreshToken = CookieHelper.ReadRefreshTokenCookie(Request.Cookies);
+        var refreshToken = CookieHelper.ReadRefreshTokenCookie(HttpContext.Request.Cookies);
         var request = new RenovarAcessoRequest { RefreshToken = refreshToken };
         var response = await handler.RenovarAcessoAsync(request);
 
@@ -38,29 +38,20 @@ public class SessoesController : ControllerBase
 
     private ActionResult<SessaoView?> Sucesso(SessaoResponse sessaoResponse)
     {
-        CookieHelper.WriteRefreshTokenCookie(Response.Cookies, sessaoResponse.RefreshToken!);
+        CookieHelper.WriteRefreshTokenCookie(HttpContext.Response.Cookies, sessaoResponse.RefreshToken!);
         var view = SessaoViewMapper.Map(sessaoResponse);
         return Ok(view);
     }
 
-    private ActionResult<SessaoView?> Erro(SessaoResponse sessaoResponse)
+    private ActionResult Erro(SessaoResponse sessaoResponse)
     {
-        CookieHelper.RemoveRefreshTokenCookie(Response.Cookies);
+        CookieHelper.RemoveRefreshTokenCookie(HttpContext.Response.Cookies);
 
         return sessaoResponse.MotivoFalha switch
         {
-            MotivoFalhaSessaoResponse.CredenciaisInvalidas => new JsonResult(new { Message = "Credenciais inválidas" })
-            {
-                StatusCode = StatusCodes.Status400BadRequest
-            },
-            MotivoFalhaSessaoResponse.SessaoInvalida => new JsonResult(new { Message = "Operação não autorizada" })
-            {
-                StatusCode = StatusCodes.Status401Unauthorized
-            },
-            _ => new JsonResult(new { Message = "Erro não esperado" })
-            {
-                StatusCode = StatusCodes.Status401Unauthorized
-            }
+            MotivoFalhaSessaoResponse.CredenciaisInvalidas => BadRequest(),
+            MotivoFalhaSessaoResponse.SessaoInvalida =>  Unauthorized(),
+            _ => ServerError()
         };
     }
 }

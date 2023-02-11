@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Sestio.Commons.Infra.EntityFramework;
 using Sestio.Commons.JsonWebTokens.Core.PeerJwts;
+using Sestio.Commons.Validation.Core;
 using Sestio.Usuarios.App.Handlers.Sessoes;
 using Sestio.Usuarios.App.Services.Sessoes.Requests;
 using Sestio.Usuarios.App.Services.Sessoes.Responses;
@@ -294,7 +295,8 @@ public sealed class SessaoHandlerTests : IDisposable
             passwordHasher,
             peerJwtBuilder,
             geradorRefreshToken,
-            sessaoOptions);
+            sessaoOptions,
+            new DefaultNotificationBag());
         return handler;
     }
 }

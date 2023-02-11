@@ -19,7 +19,7 @@ public sealed class UsuarioFactory
 
     public Usuario Criar(CriarUsuarioDto dto)
     {
-        var usuario = new Usuario(dto.IdTenant, dto.Nome, dto.Email);
+        var usuario = new Usuario(dto.IdTenant, dto.Nome, dto.Email.ToUpperInvariant());
         var hashedPassword = _passwordHasher.Hash(usuario, dto.Senha);
         usuario.AtualizarSenha(hashedPassword);
         return usuario;
