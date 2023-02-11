@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
+        <PackageReference Include="Sestio.Commons.Validation.Services" Version="$(CommonsVersion)" />
+        <PackageReference Include="Sestio.Commons.Validation.Core" Version="$(CommonsVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\Sestio.Usuarios.App.Services\Sestio.Usuarios.App.Services.csproj" />
         <ProjectReference Include="..\Sestio.Usuarios.Domain\Sestio.Usuarios.Domain.csproj" />
     </ItemGroup>

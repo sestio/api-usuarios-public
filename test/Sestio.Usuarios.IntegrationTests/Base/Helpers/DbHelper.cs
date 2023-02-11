@@ -88,6 +88,12 @@ public sealed class DbHelper
         await context.SaveChangesAsync();
     }
 
+    public Task<T> SingleAsync<T>()
+        where T : class
+    {
+        return SingleAsync<T>(_ => true);
+    }
+
     public async Task<T> SingleAsync<T>(Expression<Func<T, bool>> filter)
         where T : class
     {

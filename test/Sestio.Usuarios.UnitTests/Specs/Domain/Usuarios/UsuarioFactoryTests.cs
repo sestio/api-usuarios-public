@@ -25,6 +25,21 @@ public class UsuarioFactoryTests
         passwordHasher.IsValid(usuario, "password").Should().BeTrue();
     }
 
+    [Fact]
+    public void Normaliza_email()
+    {
+        var sut = new UsuarioFactory(CriarPasswordHasher());
+
+        var dto = new CriarUsuarioDto(
+            IdTenant: Guid.NewGuid(),
+            Nome: "user",
+            Email: "user@example.com",
+            Senha: "password");
+        var usuario = sut.Criar(dto);
+
+        usuario.Email.Should().Be("USER@EXAMPLE.COM");
+    }
+
     private static IUserPasswordHasher<Usuario> CriarPasswordHasher()
     {
         var baseHasher = new PasswordHasher<Usuario>();

@@ -11,9 +11,9 @@ public static class TestUsuarioFactory
 
         var dto = new CriarUsuarioDto(
             IdTenant: Guid.NewGuid(),
-            Nome: "Usuario Teste",
-            Email: "usuario@example.com",
-            Senha: "password");
+            Nome: $"Usuário Teste {Guid.NewGuid():N}",
+            Email: $"usuario.{Guid.NewGuid():N}@example.com",
+            Senha: Guid.NewGuid().ToString());
 
         var usuario = usuarioFactory.Criar(dto);
         return (usuario, dto);
@@ -26,8 +26,8 @@ public static class TestUsuarioFactory
 
         var dto = new CriarUsuarioDto(
             IdTenant: Guid.NewGuid(),
-            Nome: "Usuario Teste",
-            Email: "usuario@example.com",
+            Nome: $"Usuário Teste {Guid.NewGuid():N}",
+            Email: $"usuario.{Guid.NewGuid():N}@example.com",
             Senha: Guid.NewGuid().ToString());
 
         var usuario = usuarioFactory.Criar(dto);
