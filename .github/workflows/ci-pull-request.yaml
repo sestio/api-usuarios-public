@@ -3,7 +3,6 @@ name: CI (pull request)
 run-name: ${{ github.run_id }}.${{ github.run_attempt }} ${{ github.event.pull_request.title }}
 
 on:
-  workflow_dispatch:
   pull_request:
     branches: [master]
 
@@ -27,4 +26,3 @@ jobs:
     with:
       image: ${{ needs.build.outputs.testrunner-image }}
     secrets: inherit
-
