@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <CommonsVersion>0.5.2</CommonsVersion>
+        <CommonsVersion>0.6.6</CommonsVersion>
         <NpgsqlVersion>7.0.1</NpgsqlVersion>
     </PropertyGroup>
 </Project>

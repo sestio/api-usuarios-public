@@ -8,12 +8,12 @@ public class RefreshTokenMapping : RawEntityMappingConfiguration<RefreshToken>
 {
     public override void Configure(RawEntityMappingBuilder<RefreshToken> builder)
     {
-        builder.ToTable("token_sessao");
+        builder.ToTable("tokensessao");
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id).HasColumnName("id").ValueGeneratedNever();
         builder.Property(p => p.Situacao).HasColumnName("situacao");
-        builder.Property(p => p.IdSessao).HasColumnName("id_sessao");
+        builder.Property(p => p.IdSessao).HasColumnName("idsessao");
         builder.Property(p => p.Token).HasColumnName("token");
 
         builder.HasIndex(p => p.Token).IsUnique();

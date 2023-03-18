@@ -12,7 +12,7 @@ public class UsuarioMapping : RawEntityMappingConfiguration<Usuario>
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id).HasColumnName("id").ValueGeneratedNever();
-        builder.Property(p => p.IdTenant).HasColumnName("id_tenant").IsRequired();
+        builder.Property(p => p.IdTenant).HasColumnName("idtenant").IsRequired();
         builder.Property(p => p.Nome).HasColumnName("nome").IsRequired();
         builder.Property(p => p.Email).HasColumnName("email").IsRequired();
         builder.OwnsOne(p => p.Senha, b => b.Property(p => p.Value).HasColumnName("senha").IsRequired());
