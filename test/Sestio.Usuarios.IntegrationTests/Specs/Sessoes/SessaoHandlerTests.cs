@@ -16,7 +16,7 @@ using Sestio.Usuarios.IntegrationTests.Base.Helpers;
 using Sestio.Usuarios.IntegrationTests.Base.Stubs;
 using Sestio.Usuarios.TestLib.Factories;
 
-namespace Sestio.Usuarios.IntegrationTests.Specs.Handlers.Sessoes;
+namespace Sestio.Usuarios.IntegrationTests.Specs.Sessoes;
 
 public sealed class SessaoHandlerTests : IDisposable
 {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Sestio.Usuarios.Infra.EntityFramework;
@@ -11,9 +12,11 @@ using Sestio.Usuarios.Infra.EntityFramework;
 namespace Sestio.Usuarios.Startup.Migrations.Migrations
 {
     [DbContext(typeof(UsuariosDbContext))]
-    partial class UsuarioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230318211500_IdTenantSemUnderline")]
+    partial class IdTenantSemUnderline
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +33,7 @@ namespace Sestio.Usuarios.Startup.Migrations.Migrations
 
                     b.Property<Guid>("IdSessao")
                         .HasColumnType("uuid")
-                        .HasColumnName("idsessao");
+                        .HasColumnName("id_sessao");
 
                     b.Property<int>("Situacao")
                         .HasColumnType("integer")
@@ -46,7 +49,7 @@ namespace Sestio.Usuarios.Startup.Migrations.Migrations
                     b.HasIndex("Token")
                         .IsUnique();
 
-                    b.ToTable("tokensessao", (string)null);
+                    b.ToTable("token_sessao", (string)null);
                 });
 
             modelBuilder.Entity("Sestio.Usuarios.Domain.Sessoes.Entities.Sessao", b =>
@@ -57,18 +60,18 @@ namespace Sestio.Usuarios.Startup.Migrations.Migrations
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("datacriacao");
+                        .HasColumnName("data_criacao");
 
                     b.Property<Guid>("IdUsuario")
                         .HasColumnType("uuid")
-                        .HasColumnName("idusuario");
+                        .HasColumnName("id_usuario");
 
                     b.Property<int>("Situacao")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Validade")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("datavalidade");
+                        .HasColumnName("data_validade");
 
                     b.HasKey("Id");
 

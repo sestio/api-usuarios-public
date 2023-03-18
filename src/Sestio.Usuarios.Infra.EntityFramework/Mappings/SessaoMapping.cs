@@ -12,8 +12,8 @@ public class SessaoMapping : RawEntityMappingConfiguration<Sessao>
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id).HasColumnName("id").ValueGeneratedNever();
-        builder.Property(p => p.IdUsuario).HasColumnName("id_usuario").IsRequired();
-        builder.Property(p => p.Data).HasColumnName("data_criacao").IsRequired();
-        builder.Property(p => p.Validade).HasColumnName("data_validade").IsRequired();
+        builder.Property(p => p.IdUsuario).HasColumnName("idusuario").IsRequired();
+        builder.Property(p => p.Data).HasColumnName("datacriacao").IsRequired();
+        builder.Property(p => p.Validade).HasColumnName("datavalidade").IsRequired();
     }
 }
