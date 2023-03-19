@@ -58,7 +58,7 @@ jobs:
         repo-password: ${{ secrets.HELM_PASSWORD }}
         kube-config: ${{ secrets.KUBE_CONFIG }}
         chart-name: ${{ vars.DEPLOY_CHARTNAME }}
-        chart-version: 0.1.2
+        chart-version: ${{ vars.DEPLOY_CHARTVERSION }}
         values: |
           replicaCount: ${{ vars.DEPLOY_REPLICACOUNT }}
           image:
