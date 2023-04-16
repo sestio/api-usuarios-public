@@ -22,8 +22,4 @@
         <ProjectReference Include="..\..\src\Sestio.Usuarios.Infra.Domain\Sestio.Usuarios.Infra.Domain.csproj" />
         <ProjectReference Include="..\Sestio.Usuarios.TestLib\Sestio.Usuarios.TestLib.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Specs\Domain\UsuarioFactoryTests.cs" />
-    </ItemGroup>
 </Project>
